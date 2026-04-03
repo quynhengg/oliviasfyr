@@ -1,0 +1,94 @@
+:root {
+  --blue-color: #007bff;
+  --bg-body: #f4f4f4;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-body);
+  font-family: Arial, sans-serif;
+}
+
+/* Profile Block - Chiều ngang toàn màn hình */
+.profile {
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  padding: 40px 0;
+  width: 100%;
+}
+
+/* Container bên trong để giữ nội dung không bị dạt quá sát lề màn hình */
+.profile__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center; /* Căn giữa theo chiều dọc */
+  gap: 30px;
+  padding: 0 20px;
+}
+
+.profile__avatar {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.profile__content {
+  text-align: left; /* Tên và info bên phải avatar */
+}
+
+.profile__name {
+  margin: 0 0 10px 0;
+  font-size: 32px;
+  color: #333;
+}
+
+.profile__description {
+  margin: 0 0 20px 0;
+  color: #666;
+  font-size: 16px;
+}
+
+.profile__button {
+  background-color: var(--blue-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Phần Kỹ năng bên dưới */
+.skills {
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+.skills__title {
+  font-size: 18px;
+  border-left: 4px solid var(--blue-color);
+  padding-left: 10px;
+  margin-bottom: 20px;
+}
+
+.skills__list {
+  display: flex;
+  gap: 10px;
+}
+
+.skills__tag {
+  background: #e0e0e0;
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.skills__tag--highlight {
+  background: #ffc107; /* Màu vàng giống hình */
+  font-weight: bold;
+}

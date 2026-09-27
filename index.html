@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FYR Quest - Interactive Simulator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Thẻ chứa nhạc nền -->
+    <audio id="bgm" loop>
+        <source src="mario.mp3" type="audio/mp3">
+    </audio>
+
+    <div class="game-container">
+        <!-- MÀN HÌNH WELCOME -->
+        <div id="welcome-screen">
+            <h1 class="pixel-title">WELCOME!</h1>
+            
+            <p class="pixel-text">Having a headache looking for a <b>PERFECT</b> First-Year Rep?</p>
+            
+            <p class="pixel-text sub">You've reviewed dozens of standard profiles, and having a hard time deciding who is worthy for the fyr position? Welcome to FYR Quest, an interactive simulator where YOUR CHOICES helps you reveal the candidate you actually need.</p>
+            
+            <!-- Nút mở hướng dẫn -->
+            <button class="pixel-btn secondary-btn" onclick="handleButtonClick(toggleInstructions)">Instructions</button>
+            
+            <!-- Hộp thoại hướng dẫn -->
+            <div id="instruction-panel" class="instruction-box">
+                <h3>MISSION BRIEFING:</h3>
+                <p><b>Your mission:</b> You are an executive of the club, through every scenario, choose an action that you expect your fyr will be able to do on their own.</p>
+                <p><b>How it works:</b> After every choice you make, the system will calculate and scan through every candidate to find out the perfect candidate that matches your criteria.</p>
+                <p style="color: #ffcc00; text-align: center; margin-top: 10px;">Are you ready to find out who your future fyr is?</p>
+            </div>
+
+            <br>
+            <!-- Nút Start Game -->
+            <button class="pixel-btn" onclick="handleButtonClick(startGame)">Start The Quest</button>
+        </div>
+
+        <!-- MÀN HÌNH 2.0: TÌNH HUỐNG 1 -->
+        <div id="scenario-1-screen" style="display: none;">
+            <h2 class="pixel-title" style="font-size: 18px;">SITUATION 1</h2>
+            <p class="pixel-text" style="font-size: 8px; line-height: 1.8; text-align: left; margin-bottom: 20px;">
+                The club's event is coming up soon, but the team can't think of anything to create a promotion post / video that can reach first-years. You give the mission to your FYR, which result do you want to receive?
+            </p>
+            
+            <button class="pixel-btn" style="font-size: 7px; text-align: left;" onclick="handleButtonClick(() => chooseOption('A'))">
+                A. The FYR creates a regular post with boring texts and images to share on the club’s instagram, then ask people to share it on their stories.
+            </button>
+            <br>
+            <button class="pixel-btn secondary-btn" style="font-size: 7px; text-align: left;" onclick="handleButtonClick(() => chooseOption('B'))">
+                B. From the perspective of a first-year, the FYR brainstorms to find out which content would attract first-years the most and proposes a new approach: create an interactive mini-game on the club’s Instagram story to promote the event.
+            </button>
+        </div>
+
+        <!-- MÀN HÌNH 2.1: CALCULATING -->
+        <div id="calculating-screen" style="display: none;">
+            <h2 class="pixel-title" style="font-size: 20px; color: #00bcd4;">PROCESSING...</h2>
+            <p class="pixel-text" style="margin-top: 30px;"> Processing choice... Screening database...</p>
+        </div>
+
+        <!-- MÀN HÌNH 2.1 (CHỌN A): WARNING -->
+        <div id="result-a-screen" style="display: none;">
+            <h2 class="pixel-title" style="font-size: 16px; color: #f8bd0d;">⚠️ WARNING: SUB-PAR FYR DETECTED!</h2>
+            <p class="pixel-text sub" style="margin: 25px 0; line-height: 2;">
+                You actually want a FYR who doesn't want to make efforts in promoting an event??? Your club deserves a candidate who is more amazing than this!!
+            </p>
+            <button class="pixel-btn" onclick="handleButtonClick(() => showScreen('scenario-1-screen'))">Try again</button>
+        </div>
+
+        <!-- MÀN HÌNH 2.2 (CHỌN B): MATCH FOUND (OLIVIA TRAN) -->
+        <div id="result-b-screen" style="display: none; max-height: 70vh; overflow-y: auto; text-align: left; padding-right: 10px;">
+            <h2 class="pixel-title" style="font-size: 16px; color: #ffcc00; text-align: center;">MATCH FOUND: OLIVIA TRAN</h2>
+            
+            <!-- KHUNG CHÈN HÌNH CÁ NHÂN CHÍNH -->
+            <div class="profile-img-box" style="width: 120px; height: 160px; border: 3px dashed #ffcc00; margin: 15px auto; display: flex; align-items: center; justify-content: center; background: #0f051d;">
+                <span style="font-size: 6px; color: #888; text-align: center;"></span><img src="oliv.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+
+            <p style="font-size: 8px; color: #ffcc00; margin-top: 15px;"><b>Why can Olivia do well on this?</b></p>
+            
+            <p style="font-size: 7px; line-height: 1.6; color: #b8c1ec; margin-top: 8px;">
+                <b>Creative mindset:</b> Understanding that students prefer interactive games over long texts -> She knows how to create interactive games (quiz, bingo, riddles) that encourage students to voluntarily repost -> helping to spread the club’s image and event.
+            </p>
+            
+            <p style="font-size: 7px; line-height: 1.6; color: #b8c1ec; margin-top: 8px;">
+                <b>Hands-on Design & Content experience:</b> Has designed for and managed three Instagram accounts (for projects and classes) -> Have a strong aesthetic sense; ability to maintain a cohesive feed; knows how to catch up to latest trends and viral audios.
+            </p>
+
+<!-- 3 KHUNG HÌNH PROFILE IG DỰ ÁN (HIỆN NGUYÊN BẢN, KHÔNG BỊ CẮT) -->
+            <p style="font-size: 8px; color: #ffcc00; margin-top: 15px; text-align: center;">Project IG Feed Proofs:</p>
+            <div style="display: flex; justify-content: space-between; gap: 10px; margin: 10px 0;">
+                
+                <!-- Ô 1 -->
+                <div class="ig-proof-box" style="width: 32%; height: 200px; border: 2px dashed #00bcd4; display: flex; align-items: center; justify-content: center; background: #000; overflow: hidden;">
+                    <img src="ighinh1.jpg" style="width: 100%; height: 100%; object-fit: contain;">
+                </div>
+
+                <!-- Ô 2 -->
+                <div class="ig-proof-box" style="width: 32%; height: 200px; border: 2px dashed #00bcd4; display: flex; align-items: center; justify-content: center; background: #000; overflow: hidden;">
+                    <img src="ighinh2.jpg" style="width: 100%; height: 100%; object-fit: contain;">
+                </div>
+
+                <!-- Ô 3 -->
+                <div class="ig-proof-box" style="width: 32%; height: 200px; border: 2px dashed #00bcd4; display: flex; align-items: center; justify-content: center; background: #000; overflow: hidden;">
+                    <img src="ighinh3.jpg" style="width: 100%; height: 100%; object-fit: contain;">
+                </div>
+
+            </div>
+           <button class="pixel-btn" style="width: 100%; margin-top: 15px;" onclick="handleButtonClick(() => showScreen('scenario-2-screen'))">Next question</button>
+        </div>
+         <!-- MÀN HÌNH 3.0: TÌNH HUỐNG 2 -->
+        <div id="scenario-2-screen" style="display: none;">
+            <h2 class="pixel-title" style="font-size: 18px;">SITUATION 2</h2>
+            <p class="pixel-text" style="font-size: 21px; line-height: 1.4; text-align: left; margin-bottom: 15px;">
+                During an event, the video that introduces the club unexpectedly turns black. While the technical team scrambles to fix the issue, the audience starts to feel bored waiting. What should the FYR do in this situation?
+            </p>
+            
+            <button class="pixel-btn" style="font-size: 20px; text-align: left;" onclick="handleButtonClick(() => chooseOption2('A'))">
+                A. Having read the script beforehand, the FYR steps up with the microphone for a brief interaction, thanks the audience for their patience, and gives a quick overview of the event to maintain the atmosphere while the technical team handles the situation.
+            </button>
+            <br>
+            <button class="pixel-btn secondary-btn" style="font-size: 20px; text-align: left;" onclick="handleButtonClick(() => chooseOption2('B'))">
+                B. Stand still, looking at the technical team, worrying; run around asking the execs what to do.
+            </button>
+        </div>
+
+        <!-- MÀN HÌNH 3.1 (CHỌN A): MATCH FOUND (OLIVIA TRAN - TÌNH HUỐNG 2) -->
+        <div id="result-a2-screen" style="display: none; max-height: 75vh; overflow-y: auto; text-align: left; padding-right: 10px;">
+            <h2 class="pixel-title" style="font-size: 24px; color: #ffcc00; text-align: center;">MATCH FOUND: OLIVIA TRAN</h2>
+            <div class="profile-img-box" style="width: 120px; height: 160px; border: 3px dashed #ffcc00; margin: 15px auto; display: flex; align-items: center; justify-content: center; background: #0f051d;">
+                <span style="font-size: 6px; color: #888; text-align: center;"></span><img src="oliv2.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <p style="font-size: 19px; color: #ffcc00; margin-top: 10px;"><b>Why can Olivia do well on this?</b></p>
+            
+            <p style="font-size: 18px; line-height: 1.4; color: #b8c1ec; margin-top: 8px;">
+                <b>Retired theatre kid:</b> Olivia used to be a theatre kid. She took on a wide range of roles (and dressed up as a woman, a man, a ghost, etc.). This experience has given Olivia a "thick skin," making her completely unafraid to be goofy in front of a crowd. If an event hits a snag, she is ready to step onto the stage and interact with the audience to buy time for the technical team.
+            </p>
+
+            <!-- 3 KHUNG HÌNH (2 NGANG, 1 DỌC) CHO PHẦN THEATRE KID -->
+            <div style="display: flex; gap: 10px; margin: 12px 0;">
+                <div style="width: 33%; height: 120px; border: 2px dashed #00bcd4; display: flex; align-items: center; justify-content: center; background: #000; overflow: hidden;">
+                    <img src="kich1.jpg" style="width: 100%; height: 100%; object-fit: contain;">
+                </div>
+                <div style="width: 33%; height: 120px; border: 2px dashed #00bcd4; display: flex; align-items: center; justify-content: center; background: #000; overflow: hidden;">
+                    <img src="kich2.jpg" style="width: 100%; height: 100%; object-fit: contain;">
+                </div>
+                <div style="width: 34%; height: 120px; border: 2px dashed #00bcd4; display: flex; align-items: center; justify-content: center; background: #000; overflow: hidden;">
+                    <img src="kich3.jpg" style="width: 100%; height: 100%; object-fit: contain;">
+                </div>
+            </div>
+            
+            <p style="font-size: 18px; line-height: 1.4; color: #b8c1ec; margin-top: 12px;">
+                <b>Experience as a speaker:</b> Olivia used to be the host for events at her high school and a speaker (Sweet & Sweeter school project) that teaches kids about emotional psychology
+                <br>-> She knows how to adjust her word choice to connect and calm the audience down.
+            </p>
+
+            <!-- 1 KHUNG HÌNH KHỔ NGANG CHO SPEAKER -->
+            <div style="width: 100%; height: 130px; border: 2px dashed #00bcd4; display: flex; align-items: center; justify-content: center; background: #000; margin: 10px 0; overflow: hidden;">
+                <img src="noi1.jpg" style="width: 100%; height: 100%; object-fit: contain;">
+            </div>
+
+            <p style="font-size: 18px; line-height: 1.4; color: #b8c1ec; margin-top: 12px;">
+                <b>Well-prepared:</b> Before any event, she always goes through the script to keep track of every activity -> In this situation, although she might not be a master at improvising, she would be familiar with the script and ready to step in and support the team if she notices any issue.
+            </p>
+
+           <button class="pixel-btn" style="width: 100%; margin-top: 15px; font-size: 22px;" onclick="handleButtonClick(() => showScreen('final-screen'))">See final candidate match</button>
+        </div>
+
+        <!-- MÀN HÌNH 3.2 (CHỌN B): WARNING -->
+        <div id="result-b2-screen" style="display: none;">
+            <h2 class="pixel-title" style="font-size: 22px; color: #f9e749;">⚠️ WARNING: DEAD AIR & AWKWARD SILENCE DETECTED!</h2>
+            <p class="pixel-text sub" style="font-size: 22px; margin: 25px 0; line-height: 1.6;">
+                Do you really want a FYR who just stands there watching the event fall apart? Your club deserves a candidate who can break the silence better than that!!
+            </p>
+            <button class="pixel-btn" style="font-size: 22px;" onclick="handleButtonClick(() => showScreen('scenario-2-screen'))">Try again</button>
+        </div>
+
+        <!-- MÀN HÌNH 4.0: FINAL SCREENING RESULT -->
+        <div id="final-screen" style="display: none; max-height: 75vh; overflow-y: auto; text-align: left; padding-right: 10px;">
+            <h2 class="pixel-title" style="font-size: 22px; color: #ffcc00; text-align: center;">FINAL SCREENING RESULT</h2>
+            
+            <p style="font-size: 18px; line-height: 1.5; color: #b8c1ec; margin-bottom: 15px;">
+                Based on 100% of your strict criteria for Content Strategy, Crisis Management, and especially Passionate Execution, our algorithm matched 1 candidate:
+            </p>
+
+            <div style="text-align: center; margin: 20px 0; background: #0f051d; border: 3px solid #ffcc00; padding: 15px;">
+                <p style="font-size: 22px; color: #ffcc00; margin-bottom: 8px;">🏆 OLIVIA TRAN - 100% MATCH!</p>
+                <p style="font-size: 16px; line-height: 1.4; color: #ffffcc;">
+                    <i>(The fact that Olivia built a whole interactive game web app just to apply for your FYR position shows you exactly how passionate she is!!)</i>
+                </p>
+            </div>
+
+            <!-- NÚT 1: RECRUIT (BÌNH THƯỜNG) -->
+<button class="pixel-btn" style="width: 100%; font-size: 20px; background-color: #00bcd4; margin-top: 10px;" onclick="handleButtonClick(() => showScreen('paywall-screen'))">
+    [ Perfect fit! Recruit Olivia as First-Year Rep immediately! ]
+</button>
+
+            <!-- NÚT 2: FLEEING BUTTON (NÚT CHẠY TRỐN) -->
+            <div style="position: relative; height: 70px; margin-top: 15px;">
+                <button id="runaway-btn" class="pixel-btn" style="position: absolute; left: 0; top: 0; width: 100%; font-size: 18px; background-color: #ff0055;" onmouseover="moveButton()" onclick="moveButton()">
+                    [ Nah, pass... let's look for another resume... ]
+                </button>
+            </div>
+        </div>
+
+        <!-- MÀN HÌNH 5.0: PAYWALL / UPGRADE TO OLIVIA PREMIUM -->
+        <div id="paywall-screen" style="display: none; max-height: 80vh; overflow-y: auto; text-align: left; padding-right: 10px;">
+            <h2 class="pixel-title" style="font-size: 20px; color: #ffcc00; text-align: center; margin-bottom: 15px;">
+                UPGRADE TO OLIVIA PREMIUM FOR FULL ACCESS
+            </h2>
+
+            <!-- BỐ CỤC 2 CỘT (GIỐNG SPOTIFY) -->
+            <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+                
+                <!-- CỘT 1: STANDARD OLIVIA (FREE) -->
+                <div style="flex: 1; background: #1a0b2e; border: 2px solid #555; border-radius: 12px; padding: 15px; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <p style="font-size: 20px; color: #fff; margin-bottom: 5px;"><b>Standard Olivia</b></p>
+                        <p style="font-size: 24px; color: #00bcd4; margin-bottom: 5px;"><b>$0</b> <span style="font-size: 14px; color: #aaa;">/ month</span></p>
+                        <p style="font-size: 14px; color: #aaa; margin-bottom: 15px; border-bottom: 1px solid #444; padding-bottom: 10px;">Non-FYR Version</p>
+                    </div>
+
+                    <button class="pixel-btn" style="font-size: 16px; background-color: transparent; border: 2px solid #fff; border-radius: 20px; padding: 10px; margin-top: 15px; cursor: not-allowed; opacity: 0.6;" onclick="alert('You can't choose this option 😉')">
+                        NUH UH
+                    </button>
+                </div>
+
+                <!-- CỘT 2: OLIVIA PREMIUM (HIGHLIGHTED) -->
+                <div style="flex: 1; background: #1a0b2e; border: 3px solid #00c853; border-radius: 12px; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 0 15px rgba(0, 200, 83, 0.3);">
+                    <div>
+                        <p style="font-size: 20px; color: #00c853; margin-bottom: 5px;"><b>Olivia Premium</b></p>
+                        <p style="font-size: 24px; color: #00c853; margin-bottom: 5px;"><b>$0</b> <span style="font-size: 14px; color: #aaa;">/ lifetime value</span></p>
+                        <p style="font-size: 14px; color: #aaa; margin-bottom: 15px; border-bottom: 1px solid #444; padding-bottom: 10px;">When recruited as First-Year Representative</p>
+                        
+                        <p style="font-size: 13px; color: #b8c1ec; margin-bottom: 6px;">✔️ Passionate Schulich First-Year Student</p>
+                        <p style="font-size: 13px; color: #b8c1ec; margin-bottom: 6px;">✔️ Creative mind & former Theatre Kid</p>
+                        <p style="font-size: 13px; color: #b8c1ec; margin-bottom: 6px;">✔️ Content creation & design experience</p>
+                        <p style="font-size: 13px; color: #b8c1ec; margin-bottom: 6px;">✔️ 100% Dedicated FYR: Proactive Instagram content & Reel/TikTok trend strategies</p>
+                        <p style="font-size: 13px; color: #b8c1ec; margin-bottom: 6px;">✔️ Stage & Event Ready: Confident on mic, holds the room, and keeps event energy high</p>
+                        <p style="font-size: 13px; color: #b8c1ec; margin-bottom: 6px;">✔️ Proactive Problem Solver: Fills in logistics & crisis gaps without waiting to be asked</p>
+                        <p style="font-size: 13px; color: #b8c1ec; margin-bottom: 6px;">✔️ Unmatched Commitment: Built an entire web app just to apply for your club!</p>
+                    </div>
+
+                    <!-- NÚT GET OLIVIA PREMIUM (BO TRÒN MÀU XANH NỔI BẬT) -->
+                    <button class="pixel-btn" style="font-size: 16px; background-color: #00c853; color: #fff; border: none; border-radius: 20px; padding: 12px; margin-top: 15px; box-shadow: 0 4px 10px rgba(0,200,83,0.4);" onclick="handleButtonClick(showContactPopup)">
+                        [ GET OLIVIA PREMIUM ]
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- POPUP THÔNG TIN LIÊN HỆ (HIỆN RA KHI BẤM NÚT PREMIUM) -->
+        <div id="contact-popup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 999; justify-content: center; align-items: center;">
+            <div style="background: #1a0b2e; border: 4px solid #ffcc00; padding: 25px; width: 90%; max-width: 450px; text-align: center; border-radius: 10px; box-shadow: 0 0 20px #ffcc00;">
+                <h3 class="pixel-title" style="font-size: 20px; color: #ffcc00; margin-bottom: 15px;">🎉 CONGRATULATIONS! 🎉</h3>
+                <p style="font-size: 18px; color: #b8c1ec; margin-bottom: 20px; line-height: 1.5;">
+                    You have successfully unlocked the best FYR for your club! Here is how to lock in your candidate:
+                </p>
+                <div style="background: #0f051d; border: 2px dashed #00bcd4; padding: 15px; text-align: left; margin-bottom: 20px; font-size: 16px; color: #fff; line-height: 1.6;">
+                    <p>📸 <b>Instagram:</b> @quynh_engg</p>
+                    <p style="margin-top: 8px;">📧 <b>Schulich Email:</b> tqanh@yorku.ca</p>
+                </div>
+                <p style="font-size: 18px; color: #00c853; margin-bottom: 20px;"><b>Contact her now!!!</b></p>
+                
+                <button class="pixel-btn" style="font-size: 16px; width: 100%; border-radius: 20px;" onclick="handleButtonClick(closeContactPopup)">
+                    Close / Back to game
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const bgm = document.getElementById('bgm');
+        let musicStarted = false;
+
+        // Tạo tiếng click 8-bit to rõ
+        function playClick() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+
+                oscillator.type = 'square';
+                oscillator.frequency.setValueAtTime(500, audioCtx.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(900, audioCtx.currentTime + 0.08);
+
+                gainNode.gain.setValueAtTime(0.4, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.08);
+            } catch (e) {
+                console.log("AudioContext error:", e);
+            }
+        }
+
+        // Bật nhạc nền loop tự động sau cú click đầu tiên
+        function triggerBGMOnce() {
+            if (!musicStarted) {
+                bgm.volume = 0.5;
+                bgm.play().then(() => {
+                    musicStarted = true;
+                }).catch(e => console.log("BGM autoplay restricted:", e));
+            }
+        }
+
+        function handleButtonClick(actionFunction) {
+            triggerBGMOnce();
+            playClick();
+            actionFunction();
+        }
+
+        function toggleInstructions() {
+            const panel = document.getElementById('instruction-panel');
+            if (panel.style.display === 'block') {
+                panel.style.display = 'none';
+            } else {
+                panel.style.display = 'block';
+            }
+        }
+
+        // Hàm chuyển đổi màn hình cực kỳ mượt mà
+        function showScreen(screenId) {
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('scenario-1-screen').style.display = 'none';
+            document.getElementById('calculating-screen').style.display = 'none';
+            document.getElementById('result-a-screen').style.display = 'none';
+            document.getElementById('result-b-screen').style.display = 'none';
+
+            document.getElementById(screenId).style.display = 'block';
+        }
+
+        function startGame() {
+            showScreen('scenario-1-screen');
+        }
+
+        function chooseOption(option) {
+            showScreen('calculating-screen');
+            setTimeout(() => {
+                if (option === 'A') {
+                    showScreen('result-a-screen');
+                } else {
+                    showScreen('result-b-screen');
+                }
+            }, 800);
+        }
+
+        // Cập nhật lại hàm showScreen để ẩn/hiện thêm các màn hình tình huống 2
+        function showScreen(screenId) {
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('scenario-1-screen').style.display = 'none';
+            document.getElementById('calculating-screen').style.display = 'none';
+            document.getElementById('result-a-screen').style.display = 'none';
+            document.getElementById('result-b-screen').style.display = 'none';
+            
+            // Thêm các màn hình tình huống 2 vào đây
+            document.getElementById('scenario-2-screen').style.display = 'none';
+            document.getElementById('result-a2-screen').style.display = 'none';
+            document.getElementById('result-b2-screen').style.display = 'none';
+
+            document.getElementById(screenId).style.display = 'block';
+        }
+
+        // Hàm xử lý chọn đáp án cho Tình huống 2
+        function chooseOption2(option) {
+            showScreen('calculating-screen');
+            setTimeout(() => {
+                if (option === 'A') {
+                    showScreen('result-a2-screen');
+                } else {
+                    showScreen('result-b2-screen');
+                }
+            }, 800);
+        }
+
+       function moveButton() {
+            playClick();
+            const btn = document.getElementById('runaway-btn');
+            
+            // Đưa nút về dạng fixed để nó được tự do bay lượn khắp màn hình vượt ngoài khung giới hạn
+            btn.style.position = 'fixed';
+            
+            // Tính toán kích thước ngẫu nhiên trên toàn màn hình cửa sổ trình duyệt
+            const maxX = window.innerWidth - btn.offsetWidth - 50;
+            const maxY = window.innerHeight - btn.offsetHeight - 50;
+            
+            const randomX = Math.max(50, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(50, Math.floor(Math.random() * maxY));
+            
+            btn.style.left = randomX + 'px';
+            btn.style.top = randomY + 'px';
+            btn.style.transform = 'none'; // Reset transform cũ để định vị chính xác bằng left/top
+        }
+        function showScreen(screenId) {
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('scenario-1-screen').style.display = 'none';
+            document.getElementById('calculating-screen').style.display = 'none';
+            document.getElementById('result-a-screen').style.display = 'none';
+            document.getElementById('result-b-screen').style.display = 'none';
+            document.getElementById('scenario-2-screen').style.display = 'none';
+            document.getElementById('result-a2-screen').style.display = 'none';
+            document.getElementById('result-b2-screen').style.display = 'none';
+            
+            // Thêm màn hình final vào đây
+            document.getElementById('final-screen').style.display = 'none';
+
+            document.getElementById(screenId).style.display = 'block';
+        }
+
+        function showScreen(screenId) {
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('scenario-1-screen').style.display = 'none';
+            document.getElementById('calculating-screen').style.display = 'none';
+            document.getElementById('result-a-screen').style.display = 'none';
+            document.getElementById('result-b-screen').style.display = 'none';
+            document.getElementById('scenario-2-screen').style.display = 'none';
+            document.getElementById('result-a2-screen').style.display = 'none';
+            document.getElementById('result-b2-screen').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'none';
+            
+            // Thêm paywall screen vào đây
+            document.getElementById('paywall-screen').style.display = 'none';
+
+            document.getElementById(screenId).style.display = 'block';
+        }
+
+        function showContactPopup() {
+            document.getElementById('contact-popup').style.display = 'flex';
+        }
+
+        function closeContactPopup() {
+            document.getElementById('contact-popup').style.display = 'none';
+        }
+
+    </script>
+</body>
+</html>
